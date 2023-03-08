@@ -34,7 +34,9 @@ def predictionas():
                 aceleration,
                 model_year,
                 origin]
-    return jsonify(loaded_model.predict([new_data])[0])
+    
+    resultado = {"mpg": loaded_model.predict([new_data])[0]}
+    return jsonify()
 
 
 if __name__ == '__main__':
