@@ -1,12 +1,40 @@
-from flask import Flask, jsonify
+
 import os
+from flask import Flask, jsonify, request
+import pickle
 
 app = Flask(__name__)
 
+@app.route("/", methods=["GET"])
+def home():
+    return """
+    <h1>APP para calcular MPG<h1>
+    APP para testeas flask y Railway
+    """
 
-@app.route('/')
-def index():
-    return jsonify({"Choo Choo": "Welcome to your Flask app 🚅"})
+@app.route("/api/v1/predictions", methods=["GET"])
+def predictionas():
+    cylinder = request.args["cylinders"]
+    displacement = request.args["displacement"]
+    horsepower = request.args["horsepower"]
+    aceleration = request.args["aceleration"]
+    weight = request.args["weight"]
+    model_year = request.args["model_year"]
+    
+    map_origin = {'usa':1, 'japan':2, 'europe':3}
+    origin = request.args["origin"]
+    origin = map_origin[origin]
+
+    filename = "model.save"
+    loaded_model = pickle.load(open(filename, "rb"))
+    new_data = [cylinder,
+                displacement,
+                horsepower,
+                 weight,
+                aceleration,
+                model_year,
+                origin]
+    return jsonify(loaded_model.predict([new_data])[0])
 
 
 if __name__ == '__main__':
