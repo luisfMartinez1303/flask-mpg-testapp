@@ -36,7 +36,7 @@ def predictionas():
                 origin]
     
     resultado = {"mpg": loaded_model.predict([new_data])[0]}
-    return jsonify()
+    return jsonify(resultado)
 
 
 if __name__ == '__main__':
